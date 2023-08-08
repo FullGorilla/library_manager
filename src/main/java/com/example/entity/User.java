@@ -14,28 +14,31 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "LIBRARIES")
-public class Library {
+@Table(name = "USERS")
+public class User {
 
     @Id
-    @SequenceGenerator(name = "LIBRARY_ID_GENERATOR", sequenceName = "LIBRARY_ID_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "LIBRARY_ID_GENERATOR")
+    @SequenceGenerator(name = "USER_ID_GENERATOR", sequenceName = "USER_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_GENERATOR")
     @Column(name = "ID")
     private Integer id;
 
     @Column(name = "NAME")
     private String name;
+
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PASSWORD")
+    private String password;
     
-    @Column(name = "USER_ID")
-    private Integer userId;
     
-    @OneToMany(mappedBy = "library", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Logs> logs;
     
     public List<Logs> getLogs() {
     	return this.logs;
     }
-    
 
     public Integer getId() {
         return this.id;
@@ -52,12 +55,20 @@ public class Library {
     public void setName(String name) {
         this.name = name;
     }
-    
-    public Integer getUserId() {
-        return this.userId;
+
+    public String getEmail() {
+        return this.email;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

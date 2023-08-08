@@ -2,14 +2,14 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org"
     th:replace="~{layouts/main :: main(~{::title}, ~{::body/content()})}">
 <head>
-    <title>図書一覧</title>
+    <title>履歴ページ</title>
 </head>
 <body>
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle"></button>
-                <span class="navbar-brand" id="page-title">Book List</span>
+                <span class="navbar-brand" id="page-title">Borrow History</span>
             </div>
         </div>
     </nav>
@@ -25,32 +25,16 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>Title</th>
+                                        <th>Rent Date</th>
+                                        <th>Return Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="library : ${libraries}">
-                                    	<td th:text="${library.id}"></td>
-                                    	<td th:text="${library.name}"></td>
-                                    	<td>
-											<div th:switch="${library.userId}">
-												<div th:case="0">
-													<form th:action="@{/library/borrow}" method="get">
-														<input type="hidden" name="id" th:value="${library.id}">
-														<input type="submit" class="btn btn-info" value="borrow">
-													</form>
-												</div>
-												<div th:case="${#authentication.principal.user.id}">
-													<form th:action="@{/library/return}" method="post">
-														<input type="hidden" name="id" th:value="${library.id}">
-														<input type="submit" class="btn btn-danger" value="return">
-													</form>
-												</div><div th:case="*">
-													<div class="btn btn-success">borrowing</div>
-												</div>
-											</div>										
-										</td> 
+                                    <tr th:each="borrowHistory : ${borrowHistory}">
+										<td th:text="${borrowHistory.library.name}"></td>
+                                    	<td th:text="${#temporals.format(borrowHistory.rentDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                                		<td th:text="${borrowHistory.returnDate != null ? #temporals.format(borrowHistory.returnDate, 'yyyy年MM月dd日 HH:mm:ss') : '-'}"></td>
                                     </tr>
                                 </tbody>
                             </table>
